@@ -1,6 +1,7 @@
 package cn.mh.problems.service;
 
 import cn.mh.problems.common.Common;
+import cn.mh.problems.exception.BusinessException;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -31,7 +32,7 @@ public class InputService {
         Matcher m = INPUT_STRING_PATTERN.matcher(value);
 
         if (m.find()) {
-            throw new IllegalArgumentException("不可以出现连续空格...");
+            throw new BusinessException("不可以出现连续空格...");
         }
     }
 }

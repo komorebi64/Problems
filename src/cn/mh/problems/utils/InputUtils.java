@@ -7,7 +7,7 @@ import cn.mh.problems.common.Common;
  *
  * @author komorebi
  */
-public class InputUtil {
+public class InputUtils {
     /**
      * 整数输入
      */

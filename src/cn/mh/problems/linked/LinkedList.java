@@ -6,7 +6,7 @@ package cn.mh.problems.linked;
  * @author komorebi
  * @date 2019
  */
-public interface LinkedList<T> {
+public interface LinkedList<T> extends Iterable<T> {
 
     /**
      * 将一个新项添加到链表的末尾  使其成为集合中的最后一项

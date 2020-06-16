@@ -1,7 +1,8 @@
 package cn.mh.problems;
 
 import cn.mh.problems.common.Common;
-import cn.mh.problems.utils.InputUtil;
+import cn.mh.problems.exception.BusinessException;
+import cn.mh.problems.utils.InputUtils;
 
 /**
  * 电子读书器高亮选择功能
@@ -12,24 +13,24 @@ public class Problems {
 
     public static void main(String[] args) {
         try {
-            mainHandle();
+            mainHandler();
         }catch (Exception e){
             System.out.println("看样子发生了异常情况:" + e.getMessage());
-            // e.printStackTrace();
+            e.printStackTrace();
         }
     }
 
-    private static void mainHandle() {
-        while(true) {
+    private static void mainHandler() {
+        while (true) {
             try {
                 Menu.printMainMenu();
 
-                if (Menu.select() == Common.EXIT_SIGN){
+                if (Menu.select() == Common.EXIT_SIGN) {
                     return;
                 }
-            }catch (IllegalArgumentException e){
-                System.out.println("啊输入错误了！"+e.getMessage());
-                InputUtil.pauseAndPrompt();
+            } catch (BusinessException e) {
+                System.out.println("操作失败：" + e.getMessage());
+                InputUtils.pauseAndPrompt();
             }
         }
     }

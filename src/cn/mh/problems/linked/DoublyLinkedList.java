@@ -1,5 +1,6 @@
 package cn.mh.problems.linked;
 
+import java.util.Iterator;
 import java.util.Objects;
 
 /**
@@ -14,11 +15,14 @@ public class DoublyLinkedList<T> implements LinkedList<T> {
     /**记录上一个地址*/
     private Node<T> last;
     /**记录长度*/
-    private static int size;
+    private int size;
 
     @Override
     public void append(T date) {
-        if (last != null) {
+        if (Objects.isNull(last)) {
+            initiate = new Node<>(date, null, null);
+            last = initiate;
+        } else {
             Node<T> temp = last;
             // 创建后面的节点 并且加上 前后的节点值
             last = new Node<>(date, last, initiate);
@@ -28,10 +32,6 @@ public class DoublyLinkedList<T> implements LinkedList<T> {
                 initiate.next=last;
             }
             initiate.last=last;
-        } else {
-            // 判断last为空 则为刚开始创建节点
-            initiate = new Node<>(date, null, null);
-            last = initiate;
         }
         size++;
     }
@@ -111,5 +111,34 @@ public class DoublyLinkedList<T> implements LinkedList<T> {
             temp = temp.next;
         }
         throw new IllegalArgumentException("Target Not Found");
+    }
+
+    @Override
+    public Iterator<T> iterator() {
+        return new Iter();
+    }
+
+    public class Iter implements Iterator<T> {
+        // 当前指针位置
+        int cursor;
+        Node<T> node = initiate;
+
+        @Override
+        public boolean hasNext() {
+            return cursor != size;
+        }
+
+        @Override
+        public T next() {
+            T date = node.date;
+            node = node.next;
+            cursor++;
+            return date;
+        }
+
+        @Override
+        public void remove() {
+            DoublyLinkedList.this.remove(node.date);
+        }
     }
 }
