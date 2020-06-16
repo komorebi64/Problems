@@ -5,9 +5,11 @@ import cn.mh.problems.exception.BusinessException;
 import cn.mh.problems.linked.DoublyLinkedList;
 import cn.mh.problems.linked.LinkedList;
 import cn.mh.problems.pojo.TextHighlightDO;
+import cn.mh.problems.utils.Collections;
 import cn.mh.problems.utils.StringUtils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -17,11 +19,6 @@ import java.util.Objects;
  * @author komorebi
  */
 public class TextHighlightService {
-
-    /**
-     * 高亮状态值
-     */
-    private List<Boolean> highlightState;
 
     /**
      * 文本内容的 hashcode 用于检查文本内容被替换
@@ -39,7 +36,6 @@ public class TextHighlightService {
      */
     public void init() {
         if (this.stringChanges()) {
-            highlightState = this.initHighlightState();
             operationRecord = new DoublyLinkedList<>();
             contentHashcode = Common.CONTENT.hashCode();
         }
@@ -71,17 +67,43 @@ public class TextHighlightService {
         for (TextHighlightDO highlightDO : operationRecord) {
             System.out.println(highlightDO.getBegin() + "\t\t" + highlightDO.getEnd());
         }
+    }
 
+    /**
+     * 高亮统计
+     */
+    public int highlightCount() {
+        this.validateInput();
+        List<Boolean> highlightState = this.initHighlightState();
+
+        for (TextHighlightDO highlightDO : operationRecord) {
+            Integer begin = highlightDO.getBegin();
+            Integer end = highlightDO.getEnd();
+
+            if (begin.equals(end)) {
+                // 选择了一格 则反转即可
+                highlightState.set(begin, !highlightState.get(begin));
+            }else if (Collections.isSameContent(highlightState, begin, end)) {
+                // 选择区域内容相同 反转
+                Collections.fill(highlightState, !highlightState.get(begin), begin, end);
+            }else {
+                // 选择区域内容不相同 区域全部设置为 TRUE
+                Collections.fill(highlightState, Boolean.TRUE, begin, end);
+            }
+        }
+
+        return Collections.counter(highlightState, Boolean.TRUE);
     }
 
     /**
      * 验证输入的高亮区域是否合法
+     *
      * @throws BusinessException 验证失败时抛出
      */
     private void validateInputNumber(Integer begin, Integer end) {
         if (begin > end | begin < 0 & end >= 0 |
                 begin > Common.CONTENT.length() |
-                end > Common.CONTENT.length()){
+                end > Common.CONTENT.length()) {
 
             throw new BusinessException("输入的数字不可小于等于 0，且不能大于字符串长度\n" +
                     "当前字符串长度：" + Common.CONTENT.length());
@@ -93,10 +115,9 @@ public class TextHighlightService {
      */
     private List<Boolean> initHighlightState() {
         int length = Common.CONTENT.length();
-        List<Boolean> list = new ArrayList<>(length);
-        for (int i = 0; i < length; i++) {
-            list.add(false);
-        }
+        List<Boolean> list = new ArrayList<>(Arrays.asList(new Boolean[length]));
+
+        Collections.fill(list, Boolean.FALSE);
         return list;
     }
 

@@ -1,4 +1,4 @@
-package cn.mh.problems;
+package cn.mh.problems.view;
 
 import cn.mh.problems.common.Common;
 import cn.mh.problems.service.InputService;
@@ -25,9 +25,10 @@ public class Menu {
                 "\t3. 进行字符串选择\n" +
                 "\t4. 清除输入的内容\n" +
                 "\t5. 回滚至上一步操作\n" +
-                "\t6. 撤销回滚\n" +
-                "\t7. 查看操作记录\n" +
-                "\t8. 退出\n" +
+                "\t6. 撤销回滚(未完成暂不可用)\n" +
+                "\t7. 查看操作记录(未完成暂不可用)\n" +
+                "\t8. 查看高亮字数统计\n" +
+                "\t9. 退出\n" +
                 "------------------------------");
     }
 
@@ -60,6 +61,9 @@ public class Menu {
                 InputUtils.pauseAndPrompt();
                 break;
             case 8:
+                System.out.println("已选择字符串：" + highlightService.highlightCount());
+                break;
+            case 9:
                 System.out.println("拜拜ヾ(•ω•`)o");
                 return inputInt;
             default:

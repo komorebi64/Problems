@@ -19,6 +19,6 @@ public class Common {
     /**
      * 退出指示数字
      */
-   public static final int EXIT_SIGN = 8;
+   public static final int EXIT_SIGN = 9;
 
 }

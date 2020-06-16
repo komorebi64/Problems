@@ -1,7 +1,7 @@
 package cn.mh.problems.pojo;
 
 /**
- * <p>文字高亮功能操作记录的领域对象</p>
+ * <p>文字高亮功能的操作记录对象</p>
  * <p>用于记录每一次高亮选择</p>
  *
  * @author komorebi
